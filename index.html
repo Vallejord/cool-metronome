@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎵 RETRO METRONOME 🎵</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Courier+New&display=swap");
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: "Courier New", monospace;
+        background: linear-gradient(45deg, #ff00ff, #00ffff, #ffff00, #ff00ff);
+        background-size: 400% 400%;
+        animation: gradientShift 8s ease infinite;
+        min-height: 100vh;
+        color: #000;
+        overflow-x: hidden;
+      }
+
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        background: #c0c0c0;
+        border: 4px outset #c0c0c0;
+        box-shadow: 10px 10px 0px #808080;
+        padding: 20px;
+        position: relative;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+        background: #0000ff;
+        color: #ffff00;
+        padding: 10px;
+        border: 2px inset #c0c0c0;
+        font-size: 18px;
+        font-weight: bold;
+        text-shadow: 2px 2px 0px #000080;
+      }
+
+      .bpm-display {
+        text-align: center;
+        font-size: 48px;
+        font-weight: bold;
+        color: #ff0000;
+        background: #000;
+        border: 3px inset #c0c0c0;
+        padding: 15px;
+        margin: 20px 0;
+        text-shadow: 2px 2px 0px #800000;
+        font-family: "Courier New", monospace;
+      }
+
+      .visual-indicator {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: #008000;
+        border: 4px outset #c0c0c0;
+        margin: 20px auto;
+        transition: all 0.1s ease;
+      }
+
+      .visual-indicator.beat {
+        background: #ff0000;
+        transform: scale(1.2);
+        border: 4px inset #c0c0c0;
+      }
+
+      .visual-indicator.silent {
+        background: #808080;
+      }
+
+      .controls {
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .slider-container {
+        margin: 20px 0;
+        padding: 10px;
+        border: 2px inset #c0c0c0;
+        background: #e0e0e0;
+      }
+
+      .slider-label {
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #000080;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        height: 30px;
+        -webkit-appearance: none;
+        appearance: none;
+        background: #c0c0c0;
+        border: 2px inset #c0c0c0;
+        outline: none;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        background: #0000ff;
+        border: 2px outset #c0c0c0;
+        cursor: pointer;
+      }
+
+      input[type="range"]::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        background: #0000ff;
+        border: 2px outset #c0c0c0;
+        cursor: pointer;
+        border-radius: 0;
+      }
+
+      button {
+        font-family: "Courier New", monospace;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 15px 25px;
+        margin: 10px 5px;
+        border: 3px outset #c0c0c0;
+        background: #c0c0c0;
+        color: #000;
+        cursor: pointer;
+        text-transform: uppercase;
+        box-shadow: 2px 2px 0px #808080;
+      }
+
+      button:active {
+        border: 3px inset #c0c0c0;
+        box-shadow: inset 2px 2px 0px #808080;
+        transform: translate(2px, 2px);
+      }
+
+      .play-stop {
+        background: #00ff00;
+        font-size: 20px;
+        min-width: 120px;
+      }
+
+      .play-stop.playing {
+        background: #ff0000;
+      }
+
+      .random-toggle {
+        background: #ffff00;
+        display: block;
+        width: 100%;
+        margin: 15px 0;
+      }
+
+      .random-toggle.active {
+        background: #ff8000;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 12px;
+        color: #000080;
+        background: #ffff00;
+        padding: 10px;
+        border: 2px inset #c0c0c0;
+      }
+
+      .blink {
+        animation: blink 1s infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        51%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      /* Mobile optimizations */
+      @media (max-width: 480px) {
+        body {
+          padding: 10px;
+        }
+
+        .container {
+          padding: 15px;
+        }
+
+        .bpm-display {
+          font-size: 36px;
+          padding: 10px;
+        }
+
+        .visual-indicator {
+          width: 60px;
+          height: 60px;
+        }
+
+        button {
+          padding: 12px 20px;
+          font-size: 14px;
+          margin: 8px 3px;
+        }
+
+        .header {
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        🎵 RETRO METRONOME 🎵<br />
+        <span class="blink">★ PRECISION TIMING ★</span>
+      </div>
+
+      <div class="bpm-display" id="bpmDisplay">120</div>
+
+      <div class="visual-indicator" id="visualIndicator"></div>
+
+      <div class="slider-container">
+        <div class="slider-label">
+          TEMPO (BPM): <span id="bpmValue">120</span>
+        </div>
+        <input
+          type="range"
+          id="bpmSlider"
+          min="50"
+          max="240"
+          value="120"
+          step="1"
+        />
+      </div>
+
+      <div class="controls">
+        <button class="play-stop" id="playStopBtn">▶ START</button>
+      </div>
+
+      <button class="random-toggle" id="randomToggle">
+        🎲 RANDOM SILENCE: OFF
+      </button>
+
+      <div class="footer">
+        Made with ♥ in the 90s spirit!<br />
+        Touch screen friendly • Anti-clip technology
+      </div>
+    </div>
+
+    <script>
+      class RetroMetronome {
+        constructor() {
+          this.bpm = 120;
+          this.isPlaying = false;
+          this.randomSilence = false;
+          this.audioContext = null;
+          this.nextNoteTime = 0;
+          this.timerID = null;
+          this.scheduleAheadTime = 0.1;
+          this.lookahead = 25.0;
+          this.masterGain = null;
+
+          this.initElements();
+          this.initAudio();
+          this.bindEvents();
+        }
+
+        initElements() {
+          this.bpmDisplay = document.getElementById("bpmDisplay");
+          this.bpmSlider = document.getElementById("bpmSlider");
+          this.bpmValue = document.getElementById("bpmValue");
+          this.playStopBtn = document.getElementById("playStopBtn");
+          this.randomToggle = document.getElementById("randomToggle");
+          this.visualIndicator = document.getElementById("visualIndicator");
+        }
+
+        async initAudio() {
+          try {
+            this.audioContext = new (window.AudioContext ||
+              window.webkitAudioContext)();
+
+            // Create master gain node for anti-clipping
+            this.masterGain = this.audioContext.createGain();
+            this.masterGain.gain.value = 0.3; // Keep volume lower to prevent clipping
+            this.masterGain.connect(this.audioContext.destination);
+          } catch (error) {
+            console.error("Audio initialization failed:", error);
+          }
+        }
+
+        bindEvents() {
+          this.bpmSlider.addEventListener("input", (e) => {
+            this.setBpm(parseInt(e.target.value));
+          });
+
+          this.playStopBtn.addEventListener("click", () => {
+            this.togglePlayStop();
+          });
+
+          this.randomToggle.addEventListener("click", () => {
+            this.toggleRandomSilence();
+          });
+        }
+
+        setBpm(newBpm) {
+          this.bpm = newBpm;
+          this.bpmDisplay.textContent = newBpm;
+          this.bpmValue.textContent = newBpm;
+        }
+
+        async togglePlayStop() {
+          if (this.isPlaying) {
+            this.stop();
+          } else {
+            await this.start();
+          }
+        }
+
+        async start() {
+          if (!this.audioContext) {
+            await this.initAudio();
+          }
+
+          if (this.audioContext.state === "suspended") {
+            await this.audioContext.resume();
+          }
+
+          this.isPlaying = true;
+          this.nextNoteTime = this.audioContext.currentTime;
+          this.playStopBtn.textContent = "⏹ STOP";
+          this.playStopBtn.classList.add("playing");
+          this.scheduler();
+        }
+
+        stop() {
+          this.isPlaying = false;
+          if (this.timerID) {
+            clearTimeout(this.timerID);
+          }
+          this.playStopBtn.textContent = "▶ START";
+          this.playStopBtn.classList.remove("playing");
+          this.visualIndicator.classList.remove("beat", "silent");
+        }
+
+        toggleRandomSilence() {
+          this.randomSilence = !this.randomSilence;
+          if (this.randomSilence) {
+            this.randomToggle.textContent = "🎲 RANDOM SILENCE: ON";
+            this.randomToggle.classList.add("active");
+          } else {
+            this.randomToggle.textContent = "🎲 RANDOM SILENCE: OFF";
+            this.randomToggle.classList.remove("active");
+          }
+        }
+
+        scheduleNote(time, isSilent = false) {
+          if (!isSilent) {
+            // Create oscillator with anti-clipping measures
+            const osc = this.audioContext.createOscillator();
+            const gainNode = this.audioContext.createGain();
+            const filter = this.audioContext.createBiquadFilter();
+
+            // Apply low-pass filter to reduce harsh frequencies
+            filter.type = "lowpass";
+            filter.frequency.value = 8000;
+
+            osc.connect(gainNode);
+            gainNode.connect(filter);
+            filter.connect(this.masterGain);
+
+            // Use a warmer frequency and gentle envelope
+            osc.frequency.value = 880.0;
+            osc.type = "triangle"; // Softer than sine or square
+
+            // Gentle attack and decay to prevent clicks
+            gainNode.gain.setValueAtTime(0, time);
+            gainNode.gain.linearRampToValueAtTime(0.6, time + 0.005);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, time + 0.1);
+
+            osc.start(time);
+            osc.stop(time + 0.1);
+          }
+
+          // Visual feedback
+          setTimeout(() => {
+            this.updateVisualIndicator(isSilent);
+          }, (time - this.audioContext.currentTime) * 1000);
+        }
+
+        updateVisualIndicator(isSilent) {
+          this.visualIndicator.classList.remove("beat", "silent");
+
+          if (isSilent) {
+            this.visualIndicator.classList.add("silent");
+          } else {
+            this.visualIndicator.classList.add("beat");
+          }
+
+          setTimeout(() => {
+            this.visualIndicator.classList.remove("beat", "silent");
+          }, 150);
+        }
+
+        scheduler() {
+          while (
+            this.nextNoteTime <
+            this.audioContext.currentTime + this.scheduleAheadTime
+          ) {
+            const isSilent = this.randomSilence && Math.random() < 0.3; // 30% chance of silence
+            this.scheduleNote(this.nextNoteTime, isSilent);
+            this.nextNoteTime += 60.0 / this.bpm;
+          }
+
+          if (this.isPlaying) {
+            this.timerID = setTimeout(() => this.scheduler(), this.lookahead);
+          }
+        }
+      }
+
+      // Initialize the metronome when the page loads
+      document.addEventListener("DOMContentLoaded", () => {
+        new RetroMetronome();
+      });
+
+      // Handle mobile viewport issues
+      function adjustViewport() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty("--vh", `${vh}px`);
+      }
+
+      window.addEventListener("resize", adjustViewport);
+      adjustViewport();
+    </script>
+  </body>
+</html>
