@@ -11,7 +11,7 @@ A 90s-style metronome built with vanilla JavaScript and Web Audio API.
 - 🎨 90s retro aesthetic
 
 ## Live Demo
-[Try it here](https://yourusername.github.io/retro-metronome)
+[Try it here](https://vallejord.github.io/cool-metronome/)
 
 ## Usage
 Simply open the app and click START to begin. Use the slider to adjust tempo.
